@@ -1,0 +1,14 @@
+prueba 1
+
+git init-- para iniciar
+
+git add ""-- para agregar un archivo en especifico se pone el nombre del archivo
+git add. -- para agregar todos los archivos
+git commit -m "" -- para agregar un comentario 
+
+git branch -M eckord --para elegir el branch donde vamos a trabajar
+
+git remote add origin "" -- ruta del proyecto donde se aloja solo se hace una vez por proyecto
+
+git push -u origin eckord
+
