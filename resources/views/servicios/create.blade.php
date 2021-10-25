@@ -393,7 +393,7 @@ select.list-dt:focus {
                                 <div class="form-card">
                                     <h3 class="fs-title">ORDEN DE SERVICIO</h3>
                                     <div class="form-group">
-                                        <textarea name="diagnostico_rapido" id="diagnostico_rapido" rows="5" cols="20" onkeyup="javascript:this.value=this.value.toUpperCase();">Diagnóstico inicial</textarea>
+                                        <textarea name="diagnostico_rapido" id="diagnostico_rapido" rows="5" cols="20" onkeyup="javascript:this.value=this.value.toUpperCase();">Diagnóstico</textarea>
                                         <label>Fecha estimada de entrega</label>
                                         <input type="date" class="form-control" name="fecha_entrega" id="fecha_entrega"/>                                           
                                         <input type="number" class="form-control" name="costo_estimado" id="costo_estimado" step="0.01" placeholder="Costo estimado"/> 

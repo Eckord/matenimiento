@@ -26,7 +26,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 #Route::get("/users", [UserController::class, "index"]);
 Route::post('/servicios/create', [ClientesController::class, 'agregar'])->name('agregar');
-Route::get('/servicios/{servicio}/print', [ServiciosController::class, 'printOrder'])->name('imprimirOrden');
+Route::get('/servicios/{servicio}/print', [ServiciosController::class, 'printOrder'])->name('servicios.imprimirOrden');
 Route::resource('clientes', ClientesController::class);
 Route::resource('refacciones', RefaccionesController::class);
 Route::resource('servicios', ServiciosController::class);

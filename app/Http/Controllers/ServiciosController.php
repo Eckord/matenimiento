@@ -11,6 +11,7 @@ use App\Models\TipoDispositivo;
 use App\Models\EstadoDispositivo;
 use App\Models\Software;
 use App\Models\Dispositivo;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -97,6 +98,8 @@ class ServiciosController extends Controller
             $orden = new OrdenServicio();
             $orden->diagnostico_rapido = $request->input('diagnostico_rapido');
             $orden->costo_estimado = $request->input('costo_estimado');
+            $orden->diagnostico_final = $request->input('diagnostico_rapido');
+            $orden->costo_final = $request->input('costo_estimado');
             $orden->cliente_id = $request->input('cliente_id');
             $orden->save();
 
@@ -105,7 +108,9 @@ class ServiciosController extends Controller
             $seguimiento = new SeguimientoOrden();
             $seguimiento->fecha_asignacion = $fecha;
             $seguimiento->fecha_entrega = $request->input('fecha_entrega');
+            $seguimiento->fecha_entrega_final = $request->input('fecha_entrega');
             $seguimiento->users_id = auth()->user()->id;
+            $seguimiento->personal_asignado_id = 0;
             $seguimiento->save();
 
             #obtenemos el id de la orden de servicio, dispositivo y seguimiento
@@ -144,14 +149,16 @@ class ServiciosController extends Controller
      * @param  \App\Models\Servicio  $refaccion
      * @return \Illuminate\Http\Response
      */
-    public function show(Servicio $servicios)
+    public function show($id)
     {     
         /**
          * toma en cuenta que para ver los mismos 
          * datos debemos hacer la misma consulta
         **/
         //
-        return view("servicios.show", compact ('servicios'));
+        $servicios = Servicio::find($id);
+        $usuarios = User::all();
+        return view("servicios.show", compact ('servicios','usuarios'));
 
     }
 
@@ -163,10 +170,10 @@ class ServiciosController extends Controller
      */
     public function edit(Servicio $servicio)
     {
+        $usuarios = User::all();
         $cliente = Cliente::where('id', $servicio->ordenServicio->cliente_id)->first();
-        $dispositivo = Dispositivo::where('id',$servicio->dispositivo->id)->first();
-        $fecha_entrega = Str::substr($servicio->seguimientoOrden->fecha_entrega, 0, 10);#Obtenemos el valor de la fecha y eliminamos los valores no necesarios
-        return view("servicios.edit",compact('servicio','cliente','dispositivo','fecha_entrega'));
+        $fecha_entrega_final = Str::substr($servicio->seguimientoOrden->fecha_entrega_final, 0, 10);#Obtenemos el valor de la fecha y eliminamos los valores no necesarios
+        return view("servicios.edit",compact('servicio','cliente','fecha_entrega_final','usuarios'));
     }
     /**
      * Update the specified resource in storage.
@@ -176,35 +183,27 @@ class ServiciosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Servicio $servicio)
-    {
-        #CREACIÓN DE OBJETO ESTADO DISPOSITIVO
-        $estadoDisp = EstadoDispositivo::find($servicio->dispositivo->estadoDispositivo->id);
-        $estadoDisp->enciende = $request->input('enciende');
-        $estadoDisp->colores_correctos = $request->input('colores_correctos');
-        $estadoDisp->botones_completos = $request->input('botones_completos');
-        $estadoDisp->golpeado = $request->input('golpeado');
-        $estadoDisp->condiciones_fisicas = $request->input('condiciones_fisicas');
-        $estadoDisp->sistema_operativo = $request->input('sistema_operativo');
-        $estadoDisp->contrasenia = $request->input('contrasenia');
-        $estadoDisp->save();      
-        #ACTUALIZAR OBJETO SOFTWARE
-        $software = Software::find($servicio->dispositivo->software->id);
-        $software->nombre_software = $request->input('nombre_software');
-        $software->licencia = $request->input('licencia');
-        $software->save();                     
+    {                   
         #ACTUALIZAR OBJETO ORDEN DE SERVICIO
         $orden = OrdenServicio::find($servicio->ordenServicio->id);
-        $orden->diagnostico_rapido = $request->input('diagnostico_rapido');
-        $orden->costo_estimado = $request->input('costo_estimado');
+        $orden->diagnostico_final = $request->input('diagnostico_final');
+        $orden->costo_final = $request->input('costo_final');
         $orden->save();        
         #ACTUALIZAR OBJETO SEGUIMIENTO ORDEN
         $seguimiento = SeguimientoOrden::find($servicio->seguimientoOrden->id);
-        $seguimiento->fecha_entrega = $request->input('fecha_entrega');
-        $seguimiento->users_id = auth()->user()->id;
-        $seguimiento->save();        
-        #ACTUALIZAR OBJETO SERVICIO
+        $seguimiento->fecha_entrega_final = $request->input('fecha_entrega_final');
+        $seguimiento->personal_asignado_id = $request->input('personal_asignado_id');
+        $seguimiento->save();    
+        $personal=$seguimiento->personal_asignado_id;
+        #OBTENEMOS EL ID DEL PERSONAL ASIGNADO   
+        #CREACIÓN DE OBJETO SERVICIO
         $servicioCompleto = Servicio::find($servicio->id);
-        $servicioCompleto->save();        
+        if ($personal === 0) {
+            $servicioCompleto->estado = 1;
+        } else{
+            $servicioCompleto->estado = 2;
+        }
+        $servicioCompleto->save();               
         return redirect()->route('servicios.index')->with('updated', 'Servicio actualizado exitosamente');
     }
 

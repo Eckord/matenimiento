@@ -276,7 +276,7 @@ select.list-dt:focus {
     <div class="row justify-content-center mt-0">
         <div>
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                <center><h2><strong>Edición Formulario Diagnóstico Inicial</strong></h2></center>
+                <center><h2><strong>Formulario Diagnóstico Final</strong></h2></center>
                 <div class="row">
                     <div class="col-md-12 mx-0">
                         <form id="msform" method="POST" action="{{route('servicios.update',$servicio->id)}}">
@@ -285,10 +285,8 @@ select.list-dt:focus {
                             <!-- progressbar -->
                             <ul id="progressbar">
                                 <li class="active" id="account"><strong>1. REGISTRO DE DISPOSITIVO</strong></li>
-                                <li id="payment"><strong>2. ESTADO DEL DISPOSITIVO</strong></li>
-                                <li id="personal"><strong>3. SOFTWARE</strong></li>
-                                <li id="order"><strong>4. ORDEN DE SERVICIO</strong></li>
-                                <li id="final"><strong>5. RESUMEN DE SERVICIO</strong></li>
+                                <li id="order"><strong>2. ORDEN DE SERVICIO</strong></li>
+                                <li id="final"><strong>3. RESUMEN DE CAMBIOS DE SERVICIO</strong></li>
                                 <li id="confirm"><strong>TERMINAR</strong></li>
                             </ul> <!-- fieldsets -->
 
@@ -301,127 +299,38 @@ select.list-dt:focus {
                                         <label for="cliente">A.1 Cliente: </label>
                                         <input class="form-control" type="text" name="cliente" id="cliente" placeholder="Ingresa cliente" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{$cliente->id. ' - '.$cliente->nombre_cliente." ".$cliente->apellido_paterno." ".$cliente->apellido_materno}}" disabled>
                                         <input id="cliente_id" name="cliente_id" type="hidden">
-                                        <input class="form-control" type="text" name="tipo" id="tipo" placeholder="Ingresa el tipo de dispositivo" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $dispositivo->tipoDispositivo->tipo_dispositivo }}" disabled>
+                                        <input class="form-control" type="text" name="tipo" id="tipo" placeholder="Ingresa el tipo de dispositivo" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $servicio->dispositivo->tipoDispositivo->tipo_dispositivo }}" disabled>
                                         <input id="tipoDispositivo_id" name="tipoDispositivo_id" type="hidden">
                                     </div>
                                         
                                     <div class="form-group">
                                         <input type="text" class="form-control" name="numSerie" id="numSerie" placeholder="No. de serie" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $servicio->dispositivo->numSerie }}" disabled />
-                                        <input type="text" class="form-control" name="nombre_dispositivo" id="nombre_dispositivo" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $dispositivo->nombre_dispositivo }}" disabled/>
-                                        <input type="text" class="form-control" name="marca" id="marca" placeholder="Marca" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $dispositivo->marca }}" disabled />
-                                        <input type="text" class="form-control" name="modelo" id="modelo" placeholder="Modelo" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $dispositivo->modelo }}" disabled/>
+                                        <input type="text" class="form-control" name="nombre_dispositivo" id="nombre_dispositivo" placeholder="Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $servicio->dispositivo->nombre_dispositivo }}" disabled/>
+                                        <input type="text" class="form-control" name="marca" id="marca" placeholder="Marca" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $servicio->dispositivo->marca }}" disabled />
+                                        <input type="text" class="form-control" name="modelo" id="modelo" placeholder="Modelo" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $servicio->dispositivo->modelo }}" disabled/>
                                     </div>     
                                 </div>
                                 <a class="action-button-previous" href="{{route('servicios.index')}}" type="button">Cancelar</a>
                                 <input type="button" name="next" class="next action-button" value="Siguiente" />
-                            </fieldset>
-
-                            <!-- ESTADO DEL DIPOSITIVO -->
-                            <fieldset>
-                                <div class="form-card">
-                                    <h2 class="fs-title">DETALLE DISPOSITIVO</h2>
-                                    <label>¿Enciende?</label>
-                                    <select class="form-control" name="enciende" id="enciende">
-                                        <option value="" disabled>Selecciona opción</option>
-                                        @if($dispositivo->estadoDispositivo->enciende === 1)
-                                        		<option value="1" selected>Sí</option>
-                                        		<option value="0">No</option>
-                                        		<option value="2">No aplica</option>
-                                        	@elseif($dispositivo->estadoDispositivo->enciende === 0)
-                                        		<option value="1">Sí</option>
-                                        		<option value="0" selected>No</option>
-                                        		<option value="2">No aplica</option>
-                                        		@elseif($dispositivo->estadoDispositivo->enciende === 2)
-                                        		<option value="1">Sí</option>
-                                        		<option value="0">No</option>
-                                        		<option value="2" selected>No aplica</option>
-                                        @endif
-                                    </select>
-                                    <label>¿Colores correctos?</label>
-                                  <select class="form-control" name="colores_correctos" id="colores_correctos">
-                                        <option value="" disabled>Selecciona opción</option>
-                                        @if($dispositivo->estadoDispositivo->colores_correctos === 1)
-                                        		<option value="1" selected>Sí</option>
-                                        		<option value="0">No</option>
-                                        		<option value="2">No aplica</option>
-                                        	@elseif($dispositivo->estadoDispositivo->colores_correctos === 0)
-                                        		<option value="1">Sí</option>
-                                        		<option value="0" selected>No</option>
-                                        		<option value="2">No aplica</option>
-                                        		@elseif($dispositivo->estadoDispositivo->colores_correctos === 2)
-                                        		<option value="1">Sí</option>
-                                        		<option value="0">No</option>
-                                        		<option value="2" selected>No aplica</option>
-                                        @endif
-                                    </select>
-                                    <label>Botones completos?</label>
-                                    <select class="form-control" name="botones_completos" id="botones_completos">
-                                        <option value="" disabled>Selecciona opción</option>
-                                        @if($dispositivo->estadoDispositivo->botones_completos === 1)
-                                        		<option value="1" selected>Sí</option>
-                                        		<option value="0">No</option>
-                                        	@elseif($dispositivo->estadoDispositivo->botones_completos === 0)
-                                        		<option value="1">Sí</option>
-                                        		<option value="0" selected>No</option>
-                                        @endif
-                                    </select>
-                                    <label>¿Golpeado?</label>
-                                    <select class="form-control" name="golpeado" id="golpeado">
-                                        <option value="" disabled>Selecciona opción</option>
-                                        @if($dispositivo->estadoDispositivo->golpeado === 1)
-                                        		<option value="1" selected>Sí</option>
-                                        		<option value="0">No</option>
-                                        	@elseif($dispositivo->estadoDispositivo->golpeado === 0)
-                                        		<option value="1">Sí</option>
-                                        		<option value="0" selected>No</option>
-                                        @endif
-                                    </select>
-                                    <hr>
-                                    <textarea name="condiciones_fisicas" id="condiciones_fisicas" rows="5" cols="20" onkeyup="javascript:this.value=this.value.toUpperCase();" >{{ $dispositivo->estadoDispositivo->condiciones_fisicas }}</textarea>
-                                    <input type="text" class="form-control" name="sistema_operativo" id="sistema_operativo" placeholder="Sistema Operativo" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $dispositivo->estadoDispositivo->sistema_operativo }}" />
-                                    <input type="text" class="form-control" name="contrasenia" id="contrasenia" placeholder="Contraseña de acceso al equipo" value="{{ $dispositivo->estadoDispositivo->contrasenia }}"/> 
-                                </div>
-                                <input type="button" name="previous" class="previous action-button-previous" value="Anterior" />
-                                <input type="button" name="next" class="next action-button" value="Siguiente" />
-                            </fieldset>
-
-                            <!-- LISTA DE SOFTWARE -->
-                            <fieldset>
-                                <div class="form-card">
-                                    <h2 class="fs-title">SOFTWARE INSTALADO</h2>
-                                    <div class="form-group">
-                                        <label >Software instalado en el equipo de cómputo (separado por comas ',').</label>
-                                        <div class="form-group" id="listaSoftware">
-                                            <input type="text" class="form-control" name="nombre_software" id="nombre_software" placeholder="Nombre software" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $servicio->dispositivo->software->nombre_software }}" />
-                                            <label>¿Tiene licencia de todos?</label>
-                                            <select class="form-control" name="licencia" id="licencia">
-                                        		<option value="" disabled>Selecciona opción</option>
-                                        		@if($dispositivo->software->licencia === 1)
-                                        				<option value="1" selected>Sí</option>
-                                        				<option value="0">No</option>
-                                        			@elseif($dispositivo->software->licencia === 0)
-                                        				<option value="1">Sí</option>
-                                        				<option value="0" selected>No</option>
-                                        		@endif
-                                    		</select>
-                                            <!--<button type="button" id="btAdd" class="bt btn btn-outline-primary me-md-2">Añadir software</button>-->
-                                        </div>
-                                    </div>  
-                                </div>
-                                <input type="button" name="previous" class="previous action-button-previous" value="Anterior" />
-                                <input type="button" name="next" class="next action-button" value="Siguiente" />
-                            </fieldset>
-                            
+                            </fieldset>                          
                             <!-- ORDEN DE SERVICIO -->
                             <fieldset>
                                 <div class="form-card">
                                     <h3 class="fs-title">ORDEN DE SERVICIO</h3>
                                     <div class="form-group">
-                                        <textarea name="diagnostico_rapido" id="diagnostico_rapido" rows="5" cols="20" onkeyup="javascript:this.value=this.value.toUpperCase();">{{ $servicio->ordenServicio->diagnostico_rapido }}</textarea>
-                                        <label>Fecha estimada de entrega</label>
-                                        <input type="date" class="form-control" name="fecha_entrega" id="fecha_entrega" value="{{ $fecha_entrega }}" />
-                                        <label>Costo estimado</label>
-                                        <input type="number" class="form-control" name="costo_estimado" id="costo_estimado" step="0.01" placeholder="Costo estimado" value="{{ $servicio->ordenServicio->costo_estimado }}" /> 
+                                        <label>Personal asignado:</label>
+                                        <select class="form-control" name="personal_asignado_id" id="personal_asignado_id">
+                                            <option value="0" @if($servicio->seguimientoOrden->personal_asignado_id === 0)selected @endif>Quitar asignación</option>
+                                            @foreach($usuarios as $usuario)
+                                            <option value="{{ $usuario->id }}" @if($servicio->seguimientoOrden->personal_asignado_id === $usuario->id)selected @endif>{{ $usuario->id.'-'.$usuario->name }}</option>
+                                            @endforeach
+                                        </select>                                        
+                                        <label>Diagnóstico final</label>
+                                        <textarea name="diagnostico_final" id="diagnostico_final" rows="5" cols="20" onkeyup="javascript:this.value=this.value.toUpperCase();">{{ $servicio->ordenServicio->diagnostico_final }}</textarea>
+                                        <label>Nueva fecha estimada de entrega</label>
+                                        <input type="date" class="form-control" name="fecha_entrega_final" id="fecha_entrega_final" value="{{ $fecha_entrega_final }}" />
+                                        <label>Costo Final</label>
+                                        <input type="number" class="form-control" name="costo_final" id="costo_final" step="0.01" placeholder="Costo final" value="{{ $servicio->ordenServicio->costo_final }}" /> 
                                     </div>
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Anterior" />
@@ -434,27 +343,13 @@ select.list-dt:focus {
                                     <h3 class="fs-title">RESUMEN DE CAMBIOS</h3>
                                     <div class="form-group">
                                         <div class="container">
-                                            <div class="row">
-                                                <div class="col">
-                                                <label>SOFTWARE EN EQUIPO</label>
-                                                <textarea type="text" id="nombre_software2" rows="3" disabled></textarea>
-                                                <input type="text" id="licencia2" disabled/>
-
-                                                </div>
-                                                <div class="col">
-                                                <label>ESTADO DEL DISPOSITIVO</label>
-                                                <input type="text" id="enciende2" disabled/>
-                                                <input type="text" id="colores_correctos2" disabled/>
-                                                <input type="text" id="botones_completos2" disabled/>
-                                                <input type="text" id="golpeado2" disabled/>
-                                                <textarea type="text" id="condiciones_fisicas2" disabled></textarea>
-                                                <input type="text" id="sistema_operativo2" disabled/>
-                                                <input type="text" id="contrasenia2" disabled/>   
-                                                </div>
-                                            </div>
-                                            <label>DIAGNÓSTICO Y COSTO</label>
+                                            <label>PERSONAL ASIGNADO</label>
+                                            <input type="text" id="personal_asignado_id2" disabled/>
+                                            <label>DIAGNÓSTICO</label>
                                             <textarea type="text" id="diagnostico_rapido2" rows="5" cols="20" disabled></textarea>
+                                            <label>NUEVA FECHA DE ENTREGA</label>
                                             <input type="date" id="fecha_entrega2" disabled/>
+                                            <label>NUEVO COSTO</label>
                                             <input type="text" id="costo_estimado2" disabled/>
                                         </div>                                
                                     </div>
@@ -515,97 +410,21 @@ $(document).ready(function () {
         arregloTipo = dataString.split(separador, limite);
         $("#tipoDispositivo_id").val(arregloTipo);
     });
-    $("#numSerie").keyup(function () {
-        var value = $(this).val();
-        $("#numSerie2").val("núm. de serie: "+value);
-    });
-    $("#nombre_dispositivo").keyup(function () {
-        var value = $(this).val();
-        $("#nombre_dispositivo2").val("nombre: "+value);
-    });
-    $("#marca").keyup(function () {
-        var value = $(this).val();
-        $("#marca2").val("marca: "+value);
-    });
-    $("#modelo").keyup(function () {
-        var value = $(this).val();
-        $("#modelo2").val("modelo: "+value);
-    });
-    $(function(){
-        $(document).on('change','#enciende',function(){
-            var value = $(this).val();
-            if (value == 1) {
-                $("#enciende2").val('SI ENCIENDE');
-            } else if (value==0){
-                $("#enciende2").val('NO ENCIENDE');
-            } else if (value== 2){
-                $("#enciende2").val('NO APLICA ENCENDIDO');
-            }
-        });
-        $(document).on('change','#colores_correctos',function(){
-            var value = $(this).val();
-            if (value == 1) {
-                $("#colores_correctos2").val('COLORES CORRECTOS');
-            } else if (value==0){
-                $("#colores_correctos2").val('COLORES INCORRECTOS');
-            } else if (value==2){
-                $("#colores_correctos2").val('NO APLICA COLORES CORRECTOS');
-            }
-        });
-        $(document).on('change','#botones_completos',function(){
-            var value = $(this).val();
-            if (value == 1) {
-                $("#botones_completos2").val('BOTONES COMPLETOS');
-            } else {
-                $("#botones_completos2").val('BOTONES INCOMPLETOS');
-            }
-        });
-        $(document).on('change','#golpeado',function(){
-            var value = $(this).val();
-            if (value == 1) {
-                $("#golpeado2").val('ESTÁ GOLPEADO');
-            } else {
-                $("#golpeado2").val('NO ESTÁ GOLPEADO');
-            }
-        });
-
-    });
-    $("#condiciones_fisicas").keyup(function () {
-        var value = $(this).val();
-        $("#condiciones_fisicas2").val("condiciones físicas: "+value);
-    });
-    $("#sistema_operativo").keyup(function () {
-        var value = $(this).val();
-        $("#sistema_operativo2").val("sistema operativo: "+value);
-    });
-    $("#contrasenia").keyup(function () {
-        var value = $(this).val();
-        $("#contrasenia2").val("contraseña: "+value);
-    });
-    $("#nombre_software").keyup(function () {
-        var value = $(this).val();
-        $("#nombre_software2").val("software: "+value);
-    });
-        $(document).on('change','#licencia',function(){
-            var value = $(this).val();
-            if (value == 1) {
-                $("#licencia2").val('CUENTA CON LICENCIA');
-            } else {
-                $("#licencia2").val('NO CUENTA CON LICENCIA');
-            }
-        });
-    
-    $("#diagnostico_rapido").keyup(function () {
+    $("#diagnostico_final").keyup(function () {
         var value = $(this).val();
         $("#diagnostico_rapido2").val("diagnóstico: "+value);
     });
-    $("#costo_estimado").keyup(function () {
+    $("#costo_final").keyup(function () {
         var value = $(this).val();
         $("#costo_estimado2").val("costo: $"+value);
     });
-    $("#fecha_entrega").change(function () {
+    $("#fecha_entrega_final").change(function () {
         var value = $(this).val();
         $("#fecha_entrega2").val(value);
+    });
+    $("#personal_asignado_id").change(function () {
+        var value = $(this).val();
+        $("#personal_asignado_id2").val(value);
     });
     $("input[name=cliente]").change(function() {
         let name;
