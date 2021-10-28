@@ -25,7 +25,7 @@ class Servicio extends Model
 
     public function ordenServicio(){
         return $this->belongsTo('App\Models\OrdenServicio', 'ordenServicio_id');
-    }
+    }   
 
     public function seguimientoOrden(){
         return $this->belongsTo('App\Models\SeguimientoOrden', 'ordenSeguimiento_id');
@@ -33,5 +33,6 @@ class Servicio extends Model
 
     public function dispositivo(){
         return $this->belongsTo('App\Models\Dispositivo', 'dispositivo_id');
-    }
+    }  
+ 
 }

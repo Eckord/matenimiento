@@ -46,6 +46,18 @@
     <div class="col-sm-6">
       <div class="card text-center">
         <div class="card-body bg-light">
+          <h5 class="card-title">MANTENIMIENTO</h5>
+          <p class="card-text">Realiza el mantenimiento de los equipos registrados.</p>
+          <div class="d-grid gap-2">
+            <a class="btn btn-primary float-right my-3" href="#" role="button"><span data-feather="bar-chart-2"></span> Clic aquí</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>    
+    <div class="col-sm-6">
+      <div class="card text-center">
+        <div class="card-body bg-light">
           <h5 class="card-title">REPORTES</h5>
           <p class="card-text">Analiza y toma decisiones con base a los reportes generados.</p>
           <div class="d-grid gap-2">

@@ -393,6 +393,14 @@ select.list-dt:focus {
                                 <div class="form-card">
                                     <h3 class="fs-title">ORDEN DE SERVICIO</h3>
                                     <div class="form-group">
+                                        <label>Personal asignado:</label> 
+                                        <input class="form-control" type="text" name="personal_asignado" id="personal_asignado" list="personal_as" placeholder="Ingresa personal" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                        <input id="personal_asignado_id" name="personal_asignado_id" type="hidden">
+                                        <datalist id="personal_as">
+                                        @foreach ($usuarios as $usuario)
+                                            <option value="{{$usuario->id.' - '.$usuario->name}}">
+                                        @endforeach
+                                        </datalist>
                                         <textarea name="diagnostico_rapido" id="diagnostico_rapido" rows="5" cols="20" onkeyup="javascript:this.value=this.value.toUpperCase();">Diagnóstico</textarea>
                                         <label>Fecha estimada de entrega</label>
                                         <input type="date" class="form-control" name="fecha_entrega" id="fecha_entrega"/>                                           
@@ -438,6 +446,7 @@ select.list-dt:focus {
                                                 </div>
                                             </div>
                                             <label>DIAGNÓSTICO Y COSTO</label>
+                                            <input type="text" id="personal_asignado2" disabled/>
                                             <textarea type="text" id="diagnostico_rapido2" rows="5" cols="20" disabled></textarea>
                                             <input type="date" id="fecha_entrega2" disabled/>
                                             <input type="text" id="costo_estimado2" disabled/>
@@ -459,6 +468,7 @@ select.list-dt:focus {
                                     <div class="row justify-content-center">
                                         <div class="col-7 text-center">
                                             <h5>SERVICIO GUARDADO</h5>
+                                            <a class="action-button-previous" href="{{route('servicios.index')}}" type="button">Aceptar</a>
                                         </div>
                                     </div>
                                 </div>
@@ -531,7 +541,7 @@ $(document).ready(function () {
     $("#numSerie").keyup(function () {
         var value = $(this).val();
         $("#numSerie2").val("núm. de serie: "+value);
-    });
+    });  
     $("#nombre_dispositivo").keyup(function () {
         var value = $(this).val();
         $("#nombre_dispositivo2").val("nombre: "+value);
@@ -612,6 +622,10 @@ $(document).ready(function () {
         var value = $(this).val();
         $("#diagnostico_rapido2").val("diagnóstico: "+value);
     });
+    $("#personal_asignado").keyup(function () {
+        var value = $(this).val();
+        $("#personal_asignado2").val("Personal asignado: "+value);
+    });      
     $("#costo_estimado").keyup(function () {
         var value = $(this).val();
         $("#costo_estimado2").val("costo: $"+value);
@@ -629,6 +643,15 @@ $(document).ready(function () {
         arregloDeSubCadenas = dataString.split(separador, limite);
         $("#cliente_id").val(arregloDeSubCadenas);
     });
+    $("input[name=personal_asignado]").change(function() {
+        let name;
+        let valor;
+        let dataString = $('#personal_asignado').val();
+        separador = " ", // un espacio en blanco
+        limite    = 1,
+        arregloPersonalAsignado = dataString.split(separador, limite);
+        $("#personal_asignado_id").val(arregloPersonalAsignado);
+    });    
 
 });
 

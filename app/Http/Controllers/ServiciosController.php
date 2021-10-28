@@ -41,11 +41,13 @@ class ServiciosController extends Controller
      */
     public function create()
     {
+        $usuarios = User::all();
         $clientes = Cliente::where('estado', '1')->get();
         $tipodispositivos = TipoDispositivo::all();
         return view('servicios.create',array(
             'clientes' => $clientes,
-            'tipodispositivos' => $tipodispositivos
+            'tipodispositivos' => $tipodispositivos,
+            'usuarios' => $usuarios
         ));
         
     }
@@ -98,8 +100,6 @@ class ServiciosController extends Controller
             $orden = new OrdenServicio();
             $orden->diagnostico_rapido = $request->input('diagnostico_rapido');
             $orden->costo_estimado = $request->input('costo_estimado');
-            $orden->diagnostico_final = $request->input('diagnostico_rapido');
-            $orden->costo_final = $request->input('costo_estimado');
             $orden->cliente_id = $request->input('cliente_id');
             $orden->save();
 
@@ -110,7 +110,7 @@ class ServiciosController extends Controller
             $seguimiento->fecha_entrega = $request->input('fecha_entrega');
             $seguimiento->fecha_entrega_final = $request->input('fecha_entrega');
             $seguimiento->users_id = auth()->user()->id;
-            $seguimiento->personal_asignado_id = 0;
+            $seguimiento->personal_asignado_id = $request->input('personal_asignado_id');
             $seguimiento->save();
 
             #obtenemos el id de la orden de servicio, dispositivo y seguimiento

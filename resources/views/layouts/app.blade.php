@@ -138,6 +138,12 @@
                                 Registro servicio
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="{{ Request::path() === 'mantenimiento' ? 'nav-link active' : 'nav-link' }}" href="{{ url('/mantenimiento') }}">
+                                <span data-feather="settings"></span>
+                                Mantenimiento
+                                </a>
+                            </li>                            
                             
                             <li class="nav-item">
                                 <a class="{{ Request::path() === 'reportes' ? 'nav-link active' : 'nav-link' }}" href="{{ url('/reportes') }}">

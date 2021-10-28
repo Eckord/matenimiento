@@ -13,15 +13,12 @@ class OrdenServicio extends Model
 
     protected $casts = [
         'costo_estimado' => 'float',
-        'costo_final' => 'float',
         'cliente_id' => 'int'
     ];
 
     protected $fillable = [
         'diagnostico_rapido',
         'costo_estimado',
-        'diagnostico_final',
-        'costo_final',
         'cliente_id'
     ];
 

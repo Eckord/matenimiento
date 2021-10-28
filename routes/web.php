@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\RefaccionesController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\imprimirController;
+use App\Http\Controllers\MantenimientoController;
 
 
 /*
@@ -27,9 +28,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 #Route::get("/users", [UserController::class, "index"]);
 Route::post('/servicios/create', [ClientesController::class, 'agregar'])->name('agregar');
 Route::get('/servicios/{servicio}/print', [ServiciosController::class, 'printOrder'])->name('servicios.imprimirOrden');
+Route::get('/mantenimiento/{mantenimiento}/solicitud', [MantenimientoController::class, 'solicitar'])->name('mantenimiento.request');
 Route::resource('clientes', ClientesController::class);
 Route::resource('refacciones', RefaccionesController::class);
 Route::resource('servicios', ServiciosController::class);
+Route::resource('mantenimiento', MantenimientoController::class);
 Route::get('imprimir', [imprimirController::class, 'imprimir'])->name('imprimir');
 
 
