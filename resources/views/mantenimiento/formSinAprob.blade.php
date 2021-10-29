@@ -358,7 +358,7 @@ select.list-dt:focus {
                                         <label>Costo Estimado</label>
                                         <input type="text" name="costo_estimado" disabled value="{{ $servicio->ordenServicio->costo_estimado }}"> 
                                         <label>Costo Nueva Cotización</label>        
-                                        <input type="number" class="form-control" name="costoFinal1" id="costoFinal1" step="0.01" placeholder="Costo nueva cotización"/>
+                                        <input type="number" class="form-control" name="costoFinal" id="costoFinal" step="0.01" placeholder="Costo nueva cotización"/>
                                     </div>
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Anterior" />
@@ -380,7 +380,7 @@ select.list-dt:focus {
                                             <input type="text" id="hardwareActual2" disabled/>
                                             @if(Route::current()->getName() =='mantenimiento.request')
                                                 <label>Nueva Cotización</label>
-                                                <input type="text" name="costoFinal" id="costoFinal" disabled>
+                                                <input type="text" id="costoFinal1" disabled>
                                             @elseif(Route::current()->getName() =='mantenimiento.edit')
                                             <input type="hidden" name="costoFinal" id="costoFinal" value="{{ $servicio->ordenServicio->costo_estimado }}"> 
                                             @endif                                            
@@ -463,9 +463,9 @@ $(document).ready(function () {
         $("#hardwareActual2").val("Hardware Actual: "+value);
     }); 
 @if(Route::current()->getName() == 'mantenimiento.request')  
-    $("#costoFinal1").keyup(function () {
+    $("#costoFinal").keyup(function () {
         var value = $(this).val();
-        $("#costoFinal").val(value);
+        $("#costoFinal1").val(value);
     });  
 @endif             
 //here 

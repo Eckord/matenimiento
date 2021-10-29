@@ -48,6 +48,8 @@
 	</style>
 @endsection
 @section('content')
+@section('content')
+        <a class="btn btn-primary float-right my-3" href="{{ route('servicios.index')}}" role="button"><span data-feather="chevron-left"></span> Regresar</a> 
     <div class="form-card">
         <h2>RESUMEN DE ORDEN</h2>     	
             <div class="container">
@@ -169,22 +171,17 @@
                         <label>FECHA ENTREGA: {{ $servicios->seguimientoOrden->fecha_entrega->format('d-m-Y') }}</label>
                     </div>
                     <div class="column">
-                        <label style="color:red;">COSTO ESTIMADO: $ {{ $servicios->ordenServicio->costo_estimado }}</label>
+                        <label style="color:red;">COSTO ESTIMADO: $ {{ $servicios->ordenServicio->costo_estimado }}</label><br>
+                        <label style="color:red;">COSTO FINAL: $ 
+                            @if(isset( $mantenimiento->costo_final))
+                                {{ $$mantenimiento->costo_final }}
+                            @else
+                                {{ $servicios->ordenServicio->costo_estimado }}
+                            @endif
+                        </label>
                     </div>
                 </div>
-                <hr>
-                <label><strong>CAMBIOS DEL SERVICIO: </strong></label><br>
-                <label>DIAGNÓSTICO FINAL: </label><br>
-                <textarea type="text" id="diagnostico_rapido2" rows="5" cols="20" disabled>{{ $servicios->ordenServicio->diagnostico_final }}</textarea>                
-                <div class="row">
-                    <div class="column">
-                        <label>FECHA ENTREGA FINAL: {{ $servicios->seguimientoOrden->fecha_entrega_final->format('d-m-Y') }}</label>
-                    </div>
-                    <div class="column">
-                        <label style="color:red;">COSTO FINAL: $ {{ $servicios->ordenServicio->costo_final }}</label>
-                    </div>
+                <input type="submit" name="imprimir" name="imprimir" value="Reimprimir Orden" onclick="{{ route('imprimir') }}" />
                 </div>                
-            </div>
-            <hr>
-        </div>	
+            </div>	
 @endsection

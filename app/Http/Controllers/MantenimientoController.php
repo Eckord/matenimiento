@@ -35,21 +35,18 @@ class MantenimientoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-    /*
-    *Obtenemos el id de los seguimientos de orden donde el id de personal sea el que esta activo
-    */
-        $obtenerSeguimientos = SeguimientoOrden:: where('personal_asignado_id', auth()->user()->id)->get();
-
-        $mantenimientos = Mantenimiento::paginate();
-    /*
-    *Obtenemos solo los servicios que tengan el id de seguimiento de orden del personal activo
-    */        
-        foreach ($obtenerSeguimientos as $obtenerSeguimiento) {
-                    $servicios = Servicio:: where('ordenSeguimiento_id', $obtenerSeguimiento->id )->get();
+    {   
+        $servicio = Servicio::all();
+        $servicios = array();
+        $i=0;
+        foreach ($servicio as $service) {
+            if ($service->seguimientoOrden->personal_asignado_id == auth()->user()->id) {
+                $servicios [$i] = $service;
+                $i++;
+            }
         }
-        return view('mantenimiento.index', compact('mantenimientos','servicios'))
-            ->with('i', (request()->input('page', 1) - 1) * $mantenimientos->perPage());
+
+        return view('mantenimiento.index', compact('servicios','servicio'));
     }
 
     /**
@@ -136,8 +133,13 @@ class MantenimientoController extends Controller
     {
         $servicio = Servicio::find($id);
         $fecha_entrega = Str::substr($servicio->fecha_entrega_final, 0, 10);
-
-        return view('mantenimiento.edit', compact('servicio', 'fecha_entrega'));
+        if ($servicio->estado == 3) {
+        $mantenimiento = Mantenimiento::where('servicio_id', $id)->first()
+        ->where('estado', 3)->first();            
+        }else{
+            $mantenimiento = new Mantenimiento;
+        }
+        return view('mantenimiento.edit', compact('servicio', 'fecha_entrega','mantenimiento'));
     }
 
     /**

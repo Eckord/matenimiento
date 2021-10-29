@@ -317,11 +317,25 @@ select.list-dt:focus {
                                 <div class="form-card">
                                     <h3 class="fs-title">MANTENIMIENTO PREVENTIVO</h3>
                                     <div class="form-group">
-                                    <input type="text" class="form-control" name="actividad" id="actividad" placeholder="Actividad" onkeyup="javascript:this.value=this.value.toUpperCase();" value ="{{ $mantenimiento->mantenimientoPrev->actividad }}"/>
+                                    <input type="text" class="form-control" name="actividad" id="actividad" placeholder="Actividad" onkeyup="javascript:this.value=this.value.toUpperCase();" 
+                                    value ="
+                                    @isset ($mantenimiento->mantenimientoPrev->actividad)
+                                        {{ $mantenimiento->mantenimientoPrev->actividad }}
+                                    @endisset
+                                    "/>
                                     <label>Descripción:</label>
-                                    <textarea name="descripcionActividad" id="descripcionActividad" rows="5" cols="20" onkeyup="javascript:this.value=this.value.toUpperCase();" value ="{{ $mantenimiento->mantenimientoPrev->descripcion }}"></textarea>
+                                    <textarea name="descripcionActividad" id="descripcionActividad" rows="5" cols="20" onkeyup="javascript:this.value=this.value.toUpperCase();" 
+                                    value ="
+                                    @isset ($mantenimiento->mantenimientoPrev->descripcion)
+                                        {{ $mantenimiento->mantenimientoPrev->descripcion }}
+                                    @endisset 
+                                    "></textarea>
                                     <label >Listar los insumos utilizados en el mantenimiento (separar por comas ',').</label>
-                                        <input type="text" class="form-control" name="insumosUtilizados" id="insumosUtilizados" placeholder="Insumos Utilizados" onkeyup="javascript:this.value=this.value.toUpperCase();" value ="{{ $mantenimiento->mantenimientoPrev->insumos_utilizados }}"/>
+                                        <input type="text" class="form-control" name="insumosUtilizados" id="insumosUtilizados" placeholder="Insumos Utilizados" onkeyup="javascript:this.value=this.value.toUpperCase();" value ="
+                                        @isset ($mantenimiento->mantenimientoPrev->insumos_utilizados)
+                                            {{ $mantenimiento->mantenimientoPrev->insumos_utilizados }}
+                                        @endisset 
+                                        "/>
                                     </div>
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Anterior" />
@@ -333,9 +347,17 @@ select.list-dt:focus {
                                 <div class="form-card">
                                     <h3 class="fs-title">MANTENIMIENTO CORRECTIVO</h3>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="softwareActual" id="softwareActual" placeholder="Software Actual" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $mantenimiento->mantenimientoCorrect->hardware_actual }}" />
+                                        <input type="text" class="form-control" name="softwareActual" id="softwareActual" placeholder="Software Actual" onkeyup="javascript:this.value=this.value.toUpperCase();" value="
+                                        @isset ($mantenimiento->mantenimientoCorrect->hardware_actual)
+                                             {{ $mantenimiento->mantenimientoCorrect->hardware_actual }}
+                                        @endisset 
+                                        "/>
                                     
-                                        <input type="text" class="form-control" name="hardwareActual" id="hardwareActual" placeholder="Hardware Actual" onkeyup="javascript:this.value=this.value.toUpperCase();" value="{{ $mantenimiento->mantenimientoCorrect->software_actual }}"/>
+                                        <input type="text" class="form-control" name="hardwareActual" id="hardwareActual" placeholder="Hardware Actual" onkeyup="javascript:this.value=this.value.toUpperCase();" value="
+                                        @isset ($mantenimiento->mantenimientoCorrect->software_actual)
+                                             {{ $mantenimiento->mantenimientoCorrect->software_actual }}
+                                        @endisset
+                                        "/>
                                             <input type="hidden" name="estadoMantPrev" id="estadoMantPrev">
                                             <input type="hidden" name="estadoMantCorrect" id="estadoMantCorrect">
                                             <input type="hidden" name="costoFinal" id="costoFinal" value="{{ $mantenimiento->costo_final }}">                                        

@@ -12,6 +12,7 @@ use App\Models\EstadoDispositivo;
 use App\Models\Software;
 use App\Models\Dispositivo;
 use App\Models\User;
+use App\Models\Mantenimiento;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,6 @@ class ServiciosController extends Controller
     public function index()
     {
         $servicios = Servicio::all();
-
         return view("servicios.index", compact('servicios'));
     }
 
@@ -157,8 +157,14 @@ class ServiciosController extends Controller
         **/
         //
         $servicios = Servicio::find($id);
+        if ($servicios->estado == 5) {
+            $mantenimiento = Mantenimiento::where('servicio_id', $servicio->id)
+            ->where('estado', 5)->first();
+        }else{
+            $mantenimiento = new Mantenimiento;
+        }
         $usuarios = User::all();
-        return view("servicios.show", compact ('servicios','usuarios'));
+        return view("servicios.show", compact ('servicios','usuarios', 'mantenimiento'));
 
     }
 
@@ -170,10 +176,7 @@ class ServiciosController extends Controller
      */
     public function edit(Servicio $servicio)
     {
-        $usuarios = User::all();
-        $cliente = Cliente::where('id', $servicio->ordenServicio->cliente_id)->first();
-        $fecha_entrega_final = Str::substr($servicio->seguimientoOrden->fecha_entrega_final, 0, 10);#Obtenemos el valor de la fecha y eliminamos los valores no necesarios
-        return view("servicios.edit",compact('servicio','cliente','fecha_entrega_final','usuarios'));
+
     }
     /**
      * Update the specified resource in storage.
@@ -217,9 +220,31 @@ class ServiciosController extends Controller
     {
 
     }
-    public function printOrder(Servicio $servicio)
+    public function solicitud(Servicio $servicio)
     {
-
+        $mantenimiento = Mantenimiento::where('servicio_id', $servicio->id)
+        ->where('estado', 2)->first();
+        return view("servicios.solicitud",compact('servicio','mantenimiento'));
     }    
+    public function aprobarSolicitud(Servicio $servicio)
+    {
+        $mantenimiento = Mantenimiento::where('servicio_id', $servicio->id)
+        ->where('estado', 2)->first();
+        $mantenimiento->estado = 3;
+        $servicio->estado = 3;
+        $mantenimiento->save();
+        $servicio->save();
+        return redirect()->route('servicios.index')->with('updated', 'Solicitud aprobada');
+    }  
+    public function rechazarSolicitud(Servicio $servicio)
+    {
+        $mantenimiento = Mantenimiento::where('servicio_id', $servicio->id)
+        ->where('estado', 2)->first();
+        $mantenimiento->estado = 4;
+        $servicio->estado = 4;
+        $mantenimiento->save();
+        $servicio->save();
+        return redirect()->route('servicios.index')->with('updated', 'Solicitud rechazada');        
+    }          
 }
 

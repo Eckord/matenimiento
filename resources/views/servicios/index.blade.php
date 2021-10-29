@@ -27,7 +27,6 @@
                 <th scope="col">Cliente</th>
                 <th scope="col">Dispositivo</th>
                 <th scope="col">Costo estimado</th>
-                <th scope="col">Costo final</th>
                 <th scope="col">Personal</th>
                 <th scope="col">Fecha de Asignación</th>
                 <th scope="col">Fecha de Entrega</th>
@@ -40,18 +39,23 @@
                     <th scope="row">
                         <div class="row clearfix">
                             <button type="button" class="btn">
-                                <a class="@if($servicio->estado === 0) btn btn-danger @elseif($servicio->estado === 1) btn btn-primary @elseif($servicio->estado === 2) btn btn-success @endif" href="{{ route('servicios.show', $servicio) }}" role="button" title="Ver historico de servicio"><span data-feather="eye"></span></a>                                
+                                <a class="@if($servicio->estado == 0) btn btn-danger 
+                                    @elseif($servicio->estado == 1 || $servicio->estado == 3 || $servicio->estado == 4) btn btn-primary 
+                                    @elseif($servicio->estado == 2) btn btn-warning 
+                                    @elseif($servicio->estado == 5) btn btn-success
+                                    @endif" href="{{ route('servicios.show', $servicio) }}" role="button" title="Ver historico de servicio"><span data-feather="eye"></span></a>                                
                             </button>
+                            @if($servicio->estado == 2)
                             <button type="button" class="btn">
-                                <a class="@if($servicio->estado === 0) btn btn-danger @elseif($servicio->estado === 1) btn btn-primary @elseif($servicio->estado === 2) btn btn-success @endif" href="{{ route('servicios.edit', $servicio->id) }}" role="button" title="Editar servicio"><span data-feather="edit-2"></span></a>                                
-                            </button>                                                       
+                                <a class=" btn btn-warning " href="{{ route('servicios.solicitud', $servicio->id) }}" role="button" title="Atender Solicitud"><span data-feather="alert-circle"></span></a>                                
+                            </button>  
+                            @endif                                                     
                         </div>
 
                     </th>
                     <td>{{ $servicio->ordenServicio->cliente->nombre_cliente}} {{ $servicio->ordenServicio->cliente->apellido_paterno}}</td>
                     <td>{{ $servicio->dispositivo->numSerie}}</td>
                     <td>{{ $servicio->ordenServicio->costo_estimado }}</td>
-                    <td>Asignar costo final de la tabla mantenimiento</td>
                     <td>@if($servicio->seguimientoOrden->personal_asignado_id === 0)No se ha asignado personal @else{{ $servicio->seguimientoOrden->personal_asignado->name }}@endif</td>                    
                     <td>{{ $servicio->seguimientoOrden->fecha_asignacion->format('d-m-Y') }}</td>
                     <td>{{ $servicio->seguimientoOrden->fecha_entrega_final->format('d-m-Y') }}</td>

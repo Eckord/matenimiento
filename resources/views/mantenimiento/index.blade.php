@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')   
     <div class="container-fluid">
         <div class="row">
@@ -69,7 +68,7 @@
                                                          <td>COTIZACIÓN APROBADA</td>
                                                          @break
                                                      @case($servicio->estado  == 4)
-                                                         <td>COTIZACIÓN RECHAZADA</td>
+                                                         <td>COTIZACIÓN RECHAZADA PROCEDA CON EL MANTENIMIENTO INICIAL</td>
                                                          @break
                                                      @case($servicio->estado  == 5)
                                                          <td>SERVICIO TERMINADO</td>
