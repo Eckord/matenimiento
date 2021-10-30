@@ -1,8 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <div class="card-body">
-    <a class="btn btn-primary float-right my-3" href="{{ route('servicios.create')}}" role="button"><span data-feather="user-plus"></span> Agregar</a>
-
     @if ($message = Session::get('succes'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>{{ $message }}</strong>
@@ -26,8 +24,9 @@
                 <th scope="col">Opciones</th>
                 <th scope="col">Cliente</th>
                 <th scope="col">Dispositivo</th>
-                <th scope="col">Costo estimado</th>
+                <th scope="col">Costo Estimado</th>
                 <th scope="col">Personal Encargado</th>
+                <th scope="col">Estado</th>                
                 <th scope="col">Fecha de Asignación</th>
                 <th scope="col">Fecha de Entrega</th>
                 
@@ -43,7 +42,7 @@
                                     @elseif($servicio->estado == 1 || $servicio->estado == 3 || $servicio->estado == 4) btn btn-primary 
                                     @elseif($servicio->estado == 2) btn btn-warning 
                                     @elseif($servicio->estado == 5) btn btn-success
-                                    @endif" href="{{ route('servicios.show', $servicio) }}" role="button" title="Ver historico de servicio"><span data-feather="eye"></span></a>                                
+                                    @endif" href="{{ route('reportes.show', $servicio) }}" role="button" title="Ver historico de servicio"><span data-feather="eye"></span></a>                                
                             </button>
                             @if($servicio->estado == 2)
                             <button type="button" class="btn">
@@ -56,7 +55,24 @@
                     <td>{{ $servicio->ordenServicio->cliente->nombre_cliente}} {{ $servicio->ordenServicio->cliente->apellido_paterno}}</td>
                     <td>{{ $servicio->dispositivo->numSerie}}</td>
                     <td>{{ $servicio->ordenServicio->costo_estimado }}</td>
-                    <td>@if($servicio->seguimientoOrden->personal_asignado_id === 0)No se ha asignado personal @else{{ $servicio->seguimientoOrden->personal_asignado->name }}@endif</td>                    
+                    <td>@if($servicio->seguimientoOrden->personal_asignado_id === 0)No se ha asignado personal @else{{ $servicio->seguimientoOrden->personal_asignado->name }}@endif</td> 
+                            @switch(true)
+                                @case($servicio->estado  == 1)
+                                    <td>SERVICIO ASGINADO</td>
+                                    @break
+                                @case($servicio->estado  == 2)
+                                    <td>PENDIENTE DE APROBACIÓN </td>
+                                    @break
+                                @case($servicio->estado  == 3)
+                                    <td>COTIZACIÓN APROBADA</td>
+                                    @break
+                                @case($servicio->estado  == 4)
+                                    <td>COTIZACIÓN RECHAZADA PROCEDA CON EL MANTENIMIENTO INICIAL</td>
+                                    @break
+                                @case($servicio->estado  == 5)
+                                    <td>SERVICIO TERMINADO</td>
+                                    @break                                                                        
+                            @endswitch                                        
                     <td>{{ $servicio->seguimientoOrden->fecha_asignacion->format('d-m-Y') }}</td>
                     <td>{{ $servicio->seguimientoOrden->fecha_entrega_final->format('d-m-Y') }}</td>
                 </tr>

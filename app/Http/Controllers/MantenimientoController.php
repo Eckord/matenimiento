@@ -36,7 +36,7 @@ class MantenimientoController extends Controller
      */
     public function index()
     {   
-        $servicio = Servicio::all();
+        $servicio = Servicio::whereIn('estado', [1,2,3,4])->get();
         $servicios = array();
         $i=0;
         foreach ($servicio as $service) {
@@ -46,7 +46,7 @@ class MantenimientoController extends Controller
             }
         }
 
-        return view('mantenimiento.index', compact('servicios','servicio'));
+        return view('mantenimiento.index', compact('servicios'));
     }
 
     /**
@@ -118,7 +118,8 @@ class MantenimientoController extends Controller
      */
     public function show($servicioId)
     {
-        $mantenimientos = Mantenimiento::where('servicio_id', $servicioId)->get();
+        $mantenimientos = Mantenimiento::where('servicio_id', $servicioId)
+        ->where('estado', 5)->get();
         $servicios = Servicio::find($servicioId);
         return view('mantenimiento.show', compact('mantenimientos', 'servicios'));
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\RefaccionesController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\imprimirController;
 use App\Http\Controllers\MantenimientoController;
+use App\Http\Controllers\ReportesController;
 
 
 /*
@@ -35,7 +36,9 @@ Route::resource('clientes', ClientesController::class);
 Route::resource('refacciones', RefaccionesController::class);
 Route::resource('servicios', ServiciosController::class);
 Route::resource('mantenimiento', MantenimientoController::class);
+Route::resource('reportes', ReportesController::class);
 Route::get('imprimir', [imprimirController::class, 'imprimir'])->name('imprimir');
+Route::get('/reimprimir/{servicio}', [ServiciosController::class, 'reimprimir'])->name('reimprimir');
 
 
 

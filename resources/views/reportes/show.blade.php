@@ -49,10 +49,30 @@
 @endsection
 @section('content')
 @section('content')
-        <a class="btn btn-primary float-right my-3" href="{{ route('servicios.index')}}" role="button"><span data-feather="chevron-left"></span> Regresar</a> 
+        <a class="btn btn-primary float-right my-3" href="{{ route('reportes.index')}}" role="button"><span data-feather="chevron-left"></span> Regresar</a> 
     <div class="form-card">
-        <h2>RESUMEN DE ORDEN</h2>     	
+        <h2>RESUMEN DE SERVICIO</h2>     	
             <div class="container">
+                <label>ESTADO DEL SERVICIO: 
+                     @switch(true)
+                         @case($servicios->estado  == 1)
+                             SERVICIO ASGINADO
+                             @break
+                         @case($servicios->estado  == 2)
+                             PENDIENTE DE APROBACIÓN
+                             @break
+                         @case($servicios->estado  == 3)
+                             COTIZACIÓN APROBADA
+                             @break
+                         @case($servicios->estado  == 4)
+                             COTIZACIÓN RECHAZADA PROCEDA CON EL MANTENIMIENTO INICIAL
+                             @break
+                         @case($servicios->estado  == 5)
+                             SERVICIO TERMINADO
+                             @break                                                                        
+                     @endswitch 
+                </label>
+                <hr>            	
                 <label>CLIENTE: {{$servicios->ordenServicio->cliente->nombre_cliente." ".$servicios->ordenServicio->cliente->apellido_paterno." ".$servicios->ordenServicio->cliente->apellido_materno }}</label>  
                 <hr>
                 <label>TIPO DE DISPOSITIVO: {{ $servicios->dispositivo->tipoDispositivo->tipo_dispositivo }}</label>
@@ -180,11 +200,75 @@
                             @endif
                         </label>
                     </div>
-                <br><br>
-                    <div class="col text-center">
-                        <a class="btn btn-primary float-left my-3" href="{{ route('reimprimir',$servicios->id) }}" role="button"> Reimprimir Orden</a>
-                    </div>                     
-                </div>               
+                <br><br>                    
+                </div> 
+                <hr>HISTÓRICO MANTENIMIENTO : </strong><br><br> 
+                @foreach($mantenimientos as $mantenimiento)
+                <label><b><span style="
+                @if($mantenimiento->estado == 5) @else  @endif
+                     @switch(true)
+                         @case($servicios->estado  == 1)
+                             background-color: #FFFF00;
+                             @break
+                         @case($servicios->estado  == 2)
+                             background-color: #FFFF00;
+                             @break
+                         @case($servicios->estado  == 3)
+                             background-color: #4693E0;
+                             @break
+                         @case($servicios->estado  == 4)
+                             background-color: #E02F24;
+                             @break
+                         @case($servicios->estado  == 5)
+                             background-color: #27E024;
+                             @break                                                                        
+                     @endswitch                
+                ">DETALLADO MANTENIMIENTO:</span></b></label>
+                <table>
+                    <thead>
+                        <tr role="row">
+                            <th scope="col">Mantenimiento Preventivo</th>
+                            <th scope="col">Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td>Actividad Realizada</td>
+                                    <td>{{ $mantenimiento->mantenimientoPrev->actividad }}</td>
+                            </tr>
+                            <tr>
+                                <td>Descripción</td>
+                                    <td>{{ $mantenimiento->mantenimientoPrev->descripcion }}</td>
+                            </tr>
+                            <tr>
+                                <td>Insumos Utilizados</td>
+                                    <td>{{ $mantenimiento->mantenimientoPrev->insumos_utilizados }}</td>
+                            </tr>                                                       
+                    </tbody>
+                </table>  
+                <br>
+                <table>
+                    <thead>
+                        <tr role="row">
+                            <th scope="col">Mantenimiento Correctivo</th>
+                            <th scope="col">Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td>Hardware Actual</td>
+                                    <td>{{ $mantenimiento->mantenimientoCorrect->hardware_actual }}</td>
+                            </tr>
+                            <tr>
+                                <td>Software Actual</td>
+                                    <td>{{ $mantenimiento->mantenimientoCorrect->software_actual }}</td>
+                            </tr>                                                        
+                    </tbody>
+                </table> <br>                                                  
+                @endforeach  
+                 <div class="col text-center">
+                     <a class="btn btn-primary float-left my-3" href="{{ route('reimprimir',$servicios->id) }}" role="button"> Reimprimir Orden</a>
+                 </div>                 					                              
             </div>                
     </div>	
 @endsection

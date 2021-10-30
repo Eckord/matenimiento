@@ -30,7 +30,7 @@ class ServiciosController extends Controller
      */
     public function index()
     {
-        $servicios = Servicio::all();
+        $servicios = Servicio::whereIn('estado', [0,1,2,3,4])->get();
         return view("servicios.index", compact('servicios'));
     }
 
@@ -158,7 +158,7 @@ class ServiciosController extends Controller
         //
         $servicios = Servicio::find($id);
         if ($servicios->estado == 5) {
-            $mantenimiento = Mantenimiento::where('servicio_id', $servicio->id)
+            $mantenimiento = Mantenimiento::where('servicio_id', $servicios->id)
             ->where('estado', 5)->first();
         }else{
             $mantenimiento = new Mantenimiento;
@@ -245,6 +245,16 @@ class ServiciosController extends Controller
         $mantenimiento->save();
         $servicio->save();
         return redirect()->route('servicios.index')->with('updated', 'Solicitud rechazada');        
-    }          
+    }
+    public function reimprimir($idServicio)
+     {
+            #GENERAR EL PDF DEL SERVICIO
+            $servicios = Servicio::find($idServicio);
+            $view = \View::make('impresiones.imprimir', compact('servicios'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view);
+
+            return $pdf->download($servicios->ordenServicio->cliente->nombre_cliente.'.pdf');
+     }          
 }
 
