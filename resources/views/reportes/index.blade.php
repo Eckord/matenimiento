@@ -53,7 +53,7 @@
 
                     </th>
                     <td>{{ $servicio->ordenServicio->cliente->nombre_cliente}} {{ $servicio->ordenServicio->cliente->apellido_paterno}}</td>
-                    <td>{{ $servicio->dispositivo->numSerie}}</td>
+                    <td>{{ $servicio->dispositivo->nombre_dispositivo}}</td>
                     <td>{{ $servicio->ordenServicio->costo_estimado }}</td>
                     <td>@if($servicio->seguimientoOrden->personal_asignado_id === 0)No se ha asignado personal @else{{ $servicio->seguimientoOrden->personal_asignado->name }}@endif</td> 
                             @switch(true)
